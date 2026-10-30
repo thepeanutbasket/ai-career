@@ -37,7 +37,21 @@ This project builds and end-to-end machine learning pipeline to predict passenge
 ## Key Finding
 Many false negatives were male survivors, while many false positives were female non-survivors, suggesting that the model may rely heavily on sex when making predictions.
 
-## Next Steps
-- Feature engineering
-- Threshold tuning
-- Additional model comparison
+## API
+
+The trained model is exposed through a FastAPI application.
+
+### Endpoints
+- 'Get /health' - Check API status
+- 'POST /predict' - Generate a survival prediction
+
+### Example Input
+{
+  "pclass": 1,
+  "sex": "female",
+  "age": 30,
+  "sibsp": 0,
+  "parch": 0,
+  "fare": 80,
+  "embarked": "S"
+}

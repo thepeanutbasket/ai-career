@@ -3,25 +3,30 @@
 
 import joblib
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import pandas as pd
+from typing import Literal
 
 app = FastAPI() # creating a FastAPI application
 
 model = joblib.load("model.pkl")
 
 class Passenger(BaseModel): # declaring the data structure
-    pclass: int
-    sex: str
-    age: float
-    sibsp: int
-    parch: int
-    fare: float
-    embarked: str
+    pclass: int = Field(ge=1, le=3)
+    sex: Literal["male", "female"]
+    age: float = Field(ge=0, le=120)
+    sibsp: int = Field(ge=0)
+    parch: int = Field(ge=0)
+    fare: float = Field(ge=0)
+    embarked: Literal["C", "Q", "S"]
 
 @app.get("/")   # defining an endpoint / get: HTTP method that brings in the information / "/": address
 def home():
     return {"message": "Titanic ML API is running"}
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/predict")
 def predict(passenger: Passenger):
